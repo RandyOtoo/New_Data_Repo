@@ -1,0 +1,17 @@
+---
+title: "Data_Vis_Proj_1"
+author: "Randy Otoo"
+date: "2024-03-29"
+output: html_document
+---
+
+```{r }
+library(tidyverse)
+library(ggplot2)
+
+supply_chain <- read.csv("~/Downloads/supply_chain_data.csv")
+supply_chain
+
+
+```
+

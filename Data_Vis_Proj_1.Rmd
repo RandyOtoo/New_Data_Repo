@@ -2,16 +2,148 @@
 title: "Data_Vis_Proj_1"
 author: "Randy Otoo"
 date: "2024-03-29"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r }
+install.packages("viridisLite")
+install.packages("hrbrthemes")
 library(tidyverse)
 library(ggplot2)
+library(hrbrthemes)
 
 supply_chain <- read.csv("~/Downloads/supply_chain_data.csv")
 supply_chain
 
 
 ```
+
+
+
+
+
+
+
+```{r}
+
+ggplot(supply_chain, aes(x=Production.volumes,
+                         y=Revenue.generated,
+                         color = Product.type)) + 
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  labs(
+    x = "Volume of Production",
+    y = "Revenue",
+    title = " Relationship between Revenue and Production Volumes"
+  ) +
+    theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  
+    axis.title = element_text(size = 14, face = "bold"),  
+    legend.title = element_text(size = 12, face = "bold"),  
+    legend.text = element_text(size = 10)  
+  )
+
+```
+
+
+
+
+# Relationship Products and Gender
+
+```{r}
+
+supply.chain.new <- subset(supply_chain, Customer.demographics %in% c("Male", "Female"))
+supply.chain.new
+
+
+ggplot(supply.chain.new, aes(y = Order.quantities, x = Product.type, fill = Customer.demographics)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_bw () +
+  facet_wrap(~Customer.demographics) +
+  labs(
+    title = "Number of Products ordered by Gender",
+    x = "Product Type",
+    y = "Number of Quanties Ordered",
+    fill = "Gender"
+  ) +
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
+
+
+
+
+```{r}
+
+library(ggplot2)
+library(viridis)  
+
+# Subset the data
+supply_chain.new <- subset(supply_chain, Customer.demographics %in% c("Male", "Female"))
+
+# Define a color palette with distinct colors
+my_colors <- c(viridis_pal()(2))
+
+# Create the plot
+ggplot(supply_chain.new, aes(y = Order.quantities, x = Product.type, fill = Customer.demographics)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual(values = my_colors) + 
+  theme_bw() + 
+  facet_wrap(~Customer.demographics, scales = "free_y") + 
+  labs(
+    title = "Products Types Ordered by Gender",
+    x = "Product Type",
+    y = "Number of Quantities Ordered",
+    fill = "Gender"
+  ) +
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  
+    axis.title = element_text(size = 14, face = "bold"),  
+    legend.title = element_text(size = 12, face = "bold"),  
+    legend.text = element_text(size = 10)  
+  )
+
+```
+
+
+
+
+
+```{r}
+
+library(ggplot2)
+
+
+ggplot(data = supply_chain, aes(x = Product.type, y = Price, fill = Product.type)) +
+  geom_boxplot(alpha = 0.7, outlier.alpha = 0) +  
+  theme_light() +  
+  labs(
+    title = "Price by Product Type",  
+    x = "Product Type",
+    y = "Price",
+    fill = "Product Type"
+  ) +
+  coord_flip() +
+  theme(
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),   
+    axis.title = element_text(size = 14, face = "bold"),  
+    legend.title = element_text(size = 14, face = "bold"),  
+    legend.text = element_text(size = 12),  
+    legend.position = "bottom"  
+  )
+
+
+
+```
+
+
 
